@@ -1,24 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+
+import Post from "./components/Post";
+import Stories from "./components/Stories";
+import Header from "./components/Header";
+
+import { useSelector, useDispatch } from "react-redux";
+import { setLike } from "./actions";
 
 function App() {
+  const { stories, posts } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  const handleClickLike = (id) => {
+    dispatch(setLike(id));
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <div className="container">
+        <Stories stories={stories} />
+        {posts.map((post, key) => (
+          <Post key={key} post={post} handleClickLike={handleClickLike} />
+        ))}
+      </div>
     </div>
   );
 }
